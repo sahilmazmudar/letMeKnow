@@ -3,7 +3,10 @@ const puppeteer = require('puppeteer');
 const USERNAME_SELECTOR = '#username';
 const PASSWORD_SELECTOR = '#password';
 const BUTTON_SELECTOR = '#login > input.ui-button.ui-widget.ui-state-default.ui-corner-all.ui-button-text-only.btn';
-
+const ID = {
+	username: "username",
+	password: "pass"
+}
 async function login() {
 	const browser = await puppeteer.launch({headless: false});
 	const page = await browser.newPage();
@@ -13,23 +16,20 @@ async function login() {
 	await delay(1000);
 
 	await page.click('#username');
-	await page.keyboard.type("username");
+	await page.keyboard.type(ID.username);
 
 	await page.click('#password');
-	await page.keyboard.type("pass");
+	await page.keyboard.type(ID.password);
 
 	await page.click(BUTTON_SELECTOR);
 
 	await delay(1000);
-	navigateToFinances(page);
-}
-
-function navigateToFinances(page) {
 	await page.click('#UbcMainNav > li:nth-child(3) > a');
 	await delay(2000);
 	const text = page.evaluate(() => document.querySelector('body > div.standard-width > table:nth-child(2) > tbody > tr > td:nth-child(1)').textContent);
 	console.log(text);
 }
+
 
 function delay(time) {
    return new Promise(function(resolve) { 
